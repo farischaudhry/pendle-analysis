@@ -6,17 +6,11 @@ import seaborn as sns
 sns.set_style('whitegrid')
 
 def calculate_implied_apy(prices_df, expiry_date):
-    # Calculate the remaining days to expiry
-    # prices_df['days_to_expiry'] = (expiry_date - prices_df.index).days
+    # Convert PT and YT prices from USD to ETH using the underlying price
+    prices_df['pt_open_eth'] = prices_df['pt_open'] / prices_df['underlying_open']
+    prices_df['yt_open_eth'] = prices_df['yt_open'] / prices_df['underlying_open']
 
-    # # Convert PT and YT prices from USD to ETH using the underlying price
-    # prices_df['pt_open_eth'] = prices_df['pt_open'] / prices_df['underlying_open']
-    # prices_df['yt_open_eth'] = prices_df['yt_open'] / prices_df['underlying_open']
-
-    # Calculate the implied APY using ETH prices
-    # prices_df['implied_apy_eth'] = (1 + prices_df['yt_open_eth'] / prices_df['pt_open_eth']) ** (365 / prices_df['days_to_expiry']) - 1
-    prices_df['implied_apy_usd'] = (1 + prices_df['yt_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
-
+    prices_df['implied_apy'] = (1 + prices_df['yt_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
     return prices_df
 
 
@@ -56,7 +50,7 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     prices_df['days_to_expiry'] = (expiry_date - prices_df.index).days
     prices_df = calculate_implied_apy(prices_df, expiry_date)
     prices_df = calculate_fixed_yield(prices_df, expiry_date)
-    prices_df['yield_diff'] = prices_df['implied_apy_usd'] - prices_df['fixed_yield']
+    prices_df['implied_apy_minus_fixed_yield'] = prices_df['implied_apy'] - prices_df['fixed_yield']
     prices_df['pct_maturity_left'] = prices_df['days_to_expiry'] / (expiry_date - start_date).days
 
     # Filter the data by start and expiry dates
