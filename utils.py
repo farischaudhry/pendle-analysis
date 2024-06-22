@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import math
 
 sns.set_style('whitegrid')
 
@@ -17,6 +18,17 @@ def calculate_implied_apy(prices_df, expiry_date):
 def calculate_fixed_yield(prices_df, expiry_date):
     # Calculate the fixed yield using ETH prices
     prices_df['fixed_yield'] = (prices_df['underlying_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
+    return prices_df
+
+def calculate_theoretical_pt_yt(prices_df, start_date, expiry_date):
+    # Calculate the fixed yield rate r based on the initial PT price
+    days_to_expiry_initial = (expiry_date - start_date).days
+    # r = ((1 / prices_df['pt_open_eth']) ** (1 / days_to_expiry_initial) - 1)
+
+    # Theoretical PT value calculation using the calculated r
+    # prices_df['theoretical_pt_eth'] = 1 / (1 + r) ** prices_df['days_to_expiry']
+    prices_df['theoretical_pt_eth'] = np.exp(-((1 / prices_df['pt_open_eth']) ** (1 / days_to_expiry_initial) - 1) * prices_df['days_to_expiry'])
+    prices_df['theoretical_yt_eth'] = 1 - prices_df['theoretical_pt_eth']
     return prices_df
 
 def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_date):
@@ -52,6 +64,7 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     prices_df = calculate_fixed_yield(prices_df, expiry_date)
     prices_df['implied_apy_minus_fixed_yield'] = prices_df['implied_apy'] - prices_df['fixed_yield']
     prices_df['pct_maturity_left'] = prices_df['days_to_expiry'] / (expiry_date - start_date).days
+    calculate_theoretical_pt_yt(prices_df, start_date, expiry_date)
 
     # Filter the data by start and expiry dates
     return prices_df
