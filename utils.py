@@ -16,17 +16,18 @@ def calculate_implied_apy(prices_df, expiry_date):
 
 
 def calculate_fixed_yield(prices_df, expiry_date):
-    # Calculate the fixed yield using ETH prices
+    # Calculate the fixed yield
     prices_df['fixed_yield'] = (prices_df['underlying_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
+    # prices_df['fixed_yield'] = -365 / prices_df['days_to_expiry'] * np.log(prices_df['pt_open'] / prices_df['underlying_open'])
     return prices_df
 
 def calculate_theoretical_pt_yt(prices_df, start_date, expiry_date):
     # Calculate the fixed yield rate r based on the initial PT price
     days_to_expiry_initial = (expiry_date - start_date).days
-    # r = ((1 / prices_df['pt_open_eth']) ** (1 / days_to_expiry_initial) - 1)
 
     # Theoretical PT value calculation using the calculated r
     # prices_df['theoretical_pt_eth'] = 1 / (1 + r) ** prices_df['days_to_expiry']
+    # prices_df['theoretical_pt_eth'] = np.exp(-((1 / prices_df['pt_open_eth']) ** (1 / days_to_expiry_initial) - 1) * prices_df['days_to_expiry'])
     prices_df['theoretical_pt_eth'] = np.exp(-((1 / prices_df['pt_open_eth']) ** (1 / days_to_expiry_initial) - 1) * prices_df['days_to_expiry'])
     prices_df['theoretical_yt_eth'] = 1 - prices_df['theoretical_pt_eth']
     return prices_df
