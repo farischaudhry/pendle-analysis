@@ -26,11 +26,37 @@ def calculate_theoretical_pt_yt(prices_df, start_date, expiry_date):
     days_to_expiry_initial = (expiry_date - start_date).days
 
     # Theoretical PT value calculation using the calculated r
-    # prices_df['theoretical_pt_eth'] = 1 / (1 + r) ** prices_df['days_to_expiry']
-    # prices_df['theoretical_pt_eth'] = np.exp(-((1 / prices_df['pt_open_eth']) ** (1 / days_to_expiry_initial) - 1) * prices_df['days_to_expiry'])
     prices_df['theoretical_pt_eth'] = np.exp(-((1 / prices_df['pt_open_eth']) ** (1 / days_to_expiry_initial) - 1) * prices_df['days_to_expiry'])
     prices_df['theoretical_yt_eth'] = 1 - prices_df['theoretical_pt_eth']
     return prices_df
+
+def calculate_volatility(df):
+    df['daily_returns'] = df['pt_open'].pct_change()
+    df['volatility'] = df['daily_returns'].rolling(window=30).std() * np.sqrt(252)  # Annualized Volatility
+    return df
+
+# def iterate_yield_price_convergence(prices_df, iterations=1):
+#     def calculate_fixed_yield_iterative(prices_df):
+#         # This function recalculates the fixed yield based on current PT and underlying prices
+#         prices_df['iterative_fixed_yield'] = (1 / prices_df['theoretical_pt_eth']) ** (365 / prices_df['days_to_expiry']) - 1
+#         return prices_df['iterative_fixed_yield']
+
+#     def calculate_theoretical_prices(prices_df):
+#         prices_df['theoretical_pt_eth'] = np.exp(-prices_df['iterative_fixed_yield'] * prices_df['days_to_expiry'])
+#         prices_df['theoretical_yt_eth'] = 1 - prices_df['theoretical_pt_eth']
+#         return prices_df
+
+#     prices_df['theoretical_pt_eth'] = prices_df['pt_open_eth']
+#     prices_df['theoretical_yt_eth'] = prices_df['yt_open_eth']
+
+#     for i in range(iterations):
+#         # Calculate fixed yield
+#         yield_rate = calculate_fixed_yield_iterative(prices_df)
+
+#         # Update theoretical prices based on the current yield
+#         prices_df = calculate_theoretical_prices(prices_df)
+
+#     return prices_df
 
 def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_date):
     # Load the data
@@ -65,7 +91,9 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     prices_df = calculate_fixed_yield(prices_df, expiry_date)
     prices_df['implied_apy_minus_fixed_yield'] = prices_df['implied_apy'] - prices_df['fixed_yield']
     prices_df['pct_maturity_left'] = prices_df['days_to_expiry'] / (expiry_date - start_date).days
-    calculate_theoretical_pt_yt(prices_df, start_date, expiry_date)
+    prices_df = calculate_theoretical_pt_yt(prices_df, start_date, expiry_date)
+    # prices_df = iterate_yield_price_convergence(prices_df, iterations=10)
+    prices_df = calculate_volatility(prices_df)
 
     # Filter the data by start and expiry dates
     return prices_df
