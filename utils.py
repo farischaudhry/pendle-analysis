@@ -6,6 +6,29 @@ import math
 
 sns.set_style('whitegrid')
 
+# delta = dPT/dS
+def calculate_delta(df):
+    if 'pt_open' in df.columns and 'underlying_open' in df.columns:
+        df['pt_change'] = df['pt_open'].diff().fillna(0)
+        df['underlying_change'] = df['underlying_open'].diff().fillna(0)
+        df['delta'] = df['pt_change'] / df['underlying_change'].replace(0, method='ffill')  # Replace zero to avoid division by zero
+    return df
+
+# gamma = d^2PT/dS^2
+def calculate_gamma(df):
+    if 'delta' in df.columns and 'underlying_open' in df.columns:
+        df['delta_change'] = df['delta'].diff().fillna(0)
+        df['gamma'] = df['delta_change'] / df['underlying_change'].replace(0, method='ffill')  # Replace zero to avoid division by zero
+    return df
+
+# vega = dPT/dvolatility
+def calculate_vega(df):
+    if 'pt_open' in df.columns:
+        df['volatility'] = df['pt_open'].pct_change().rolling(window=30).std()
+        df['volatility_change'] = df['volatility'].diff().fillna(0)
+        df['vega'] = df['pt_change'] / df['volatility_change'].replace(0, method='ffill')  # Replace zero to avoid division by zero
+    return df
+
 def calculate_implied_apy(prices_df, expiry_date):
     # Convert PT and YT prices from USD to ETH using the underlying price
     prices_df['pt_open_eth'] = prices_df['pt_open'] / prices_df['underlying_open']
@@ -15,7 +38,9 @@ def calculate_implied_apy(prices_df, expiry_date):
     return prices_df
 
 def calculate_volatility(df):
-    df['daily_returns'] = df['pt_open'].pct_change()
+    df['daily_pt_change'] = df['pt_open_eth'].pct_change()
+    df['daily_yt_change'] = df['yt_open_eth'].pct_change()
+    df['daily_returns'] = df['underlying_open'].pct_change()
     df['volatility'] = df['daily_returns'].rolling(window=30).std() * np.sqrt(252)  # Annualized Volatility
     return df
 
@@ -95,6 +120,10 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     prices_df = calculate_theoretical_pt_yt(prices_df, start_date, expiry_date)
     # prices_df = iterate_yield_price_convergence(prices_df, iterations=1)
     prices_df = calculate_volatility(prices_df)
+
+    prices_df = calculate_delta(prices_df)
+    prices_df = calculate_gamma(prices_df)
+    prices_df = calculate_vega(prices_df)
 
     return prices_df
 
