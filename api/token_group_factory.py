@@ -42,5 +42,13 @@ class TokenGroupFactory:
     def uniETH_Sep():
         return TokenGroup("uniETH_Sep", ETHERIUM_CHAIN_ID, uniETH_UNDERLYING_ADDRESS, uniETH_Sep_PT_ADDRESS, uniETH_Sep_YT_ADDRESS)
 
+    @staticmethod
+    def rsETH_Jun():
+        return TokenGroup("rsETH_Jun", ETHERIUM_CHAIN_ID, rsETH_UNDERLYING_ADDRESS, rsETH_Jun_PT_ADDRESS, rsETH_Jun_YT_ADDRESS)
+
+    @staticmethod
+    def rsETH_Sep():
+        return TokenGroup("rsETH_Sep", ETHERIUM_CHAIN_ID, rsETH_UNDERLYING_ADDRESS, rsETH_Sep_PT_ADDRESS, rsETH_Sep_YT_ADDRESS)
+
 
 

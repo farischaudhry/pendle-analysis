@@ -9,45 +9,27 @@ class DataFetcher:
         PendleAPI.fetch_and_save_ohlcv_data_daily(token_group.yt_token.token_name, token_group.yt_token.token_address, token_group.chain_id)
 
 def main():
-    token_group = TokenGroupFactory.etherfi_eETH_Jun()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
+    # Define a list of tuples containing the factory method and its corresponding maturity
+    token_group_factories = [
+        (TokenGroupFactory.etherfi_eETH_Jun, "Jun"),
+        (TokenGroupFactory.etherfi_eETH_Sep, "Sep"),
+        (TokenGroupFactory.etherfi_eETH_Dec, "Dec"),
+        (TokenGroupFactory.zircuit_eETH_Jun, "Jun"),
+        (TokenGroupFactory.ezETH_Sep, "Sep"),
+        (TokenGroupFactory.ezETH_Dec, "Dec"),
+        (TokenGroupFactory.pufETH_Jun, "Jun"),
+        (TokenGroupFactory.pufETH_Sep, "Sep"),
+        (TokenGroupFactory.uniETH_Jun, "Jun"),
+        (TokenGroupFactory.uniETH_Sep, "Sep"),
+        (TokenGroupFactory.rsETH_Jun, "Jun"),
+        (TokenGroupFactory.rsETH_Sep, "Sep")
+    ]
 
-    token_group = TokenGroupFactory.etherfi_eETH_Sep()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
-
-    token_group = TokenGroupFactory.etherfi_eETH_Dec()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
-
-    token_group = TokenGroupFactory.zircuit_eETH_Jun()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
-
-    token_group = TokenGroupFactory.ezETH_Sep()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
-
-    token_group = TokenGroupFactory.ezETH_Dec()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
-
-    token_group = TokenGroupFactory.pufETH_Jun()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
-
-    token_group = TokenGroupFactory.pufETH_Sep()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
-
-    token_group = TokenGroupFactory.uniETH_Jun()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
-
-    token_group = TokenGroupFactory.uniETH_Sep()
-    print(token_group.underlying_token.token_name)
-    DataFetcher.fetch_token_group_data(token_group)
+    # Iterate over the list and perform operations
+    for factory, maturity in token_group_factories:
+        token_group = factory()
+        print(token_group.underlying_token.token_name)
+        DataFetcher.fetch_token_group_data(token_group)
 
 if __name__ == '__main__':
     main()

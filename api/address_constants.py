@@ -61,3 +61,15 @@ uniETH_Jun_start_date = datetime(2024, 3, 29)  # 29th March 2024
 uniETH_Sep_YT_ADDRESS = '0xdf74ba4436478969a54ecb352093312fe97ebaa5'
 uniETH_Sep_PT_ADDRESS = '0x15fa86404bfba8b46684552f792558128bfb6418'
 uniETH_Sep_start_date = datetime(2024, 5, 22)  # 22nd May 2024
+
+### Kelp rsETH
+rsETH_UNDERLYING_ADDRESS = '0xa1290d69c65a6fe4df752f95823fae25cb99e5a7'
+
+rsETH_Jun_YT_ADDRESS = '0x0ed3a1d45dfdcf85bcc6c7bafdc0170a357b974c'
+rsETH_Jun_PT_ADDRESS = '0xb05cabcd99cf9a73b19805edefc5f67ca5d1895e'
+rsETH_Jun_start_date = datetime(2024, 5, 20)  # 20th May 2024
+
+rsETH_Sep_YT_ADDRESS = '0xe653e4048620e546afff02d3689678896d22e236'
+rsETH_Sep_PT_ADDRESS = '0x7baf258049cc8b9a78097723dc19a8b103d4098f'
+rsETH_Sep_start_date = datetime(2024, 5, 20)  # 20th May 2024
+

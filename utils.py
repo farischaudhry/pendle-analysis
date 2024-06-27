@@ -46,7 +46,7 @@ def calculate_volatility(df):
 
 def calculate_fixed_yield(prices_df, expiry_date):
     # Calculate the fixed yield
-    # prices_df['fixed_yield'] = (prices_df['underlying_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
+    prices_df['fixed_yield'] = (prices_df['underlying_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
     prices_df['fixed_yield'] = -365 / prices_df['days_to_expiry'] * np.log(prices_df['pt_open'] / prices_df['underlying_open'])
     return prices_df
 
@@ -83,7 +83,7 @@ def iterate_yield_price_convergence(prices_df, iterations=10):
 
     return prices_df
 
-def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_date):
+def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_date, tvl_path=None):
     # Load the data
     pt_df = pd.read_csv(pt_path)
     yt_df = pd.read_csv(yt_path)
@@ -104,10 +104,10 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     underlying_df.set_index('date', inplace=True)
 
     # Inner join the dataframes on 'time'
-    prices_df = pt_df[['open']].join(yt_df[['open']], lsuffix='_pt', rsuffix='_yt', how='inner').join(underlying_df[['open']], how='inner')
+    prices_df = pt_df[['open', 'volume']].join(yt_df[['open', 'volume']], lsuffix='_pt', rsuffix='_yt', how='inner').join(underlying_df[['open', 'volume']], rsuffix='_underlying', how='inner')
 
     # Rename the columns
-    prices_df.columns = ['pt_open', 'yt_open', 'underlying_open']
+    prices_df.columns = ['pt_open', 'pt_volume', 'yt_open', 'yt_volume', 'underlying_open', 'underlying_volume']
 
     # Filter the data by start and expiry dates
     prices_df = prices_df[(prices_df.index >= start_date) & (prices_df.index <= expiry_date)]
@@ -125,7 +125,17 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     prices_df = calculate_gamma(prices_df)
     prices_df = calculate_vega(prices_df)
 
-    return prices_df
+    if tvl_path:
+        tvl_df = pd.read_csv(tvl_path)
+        # Remove unnamed columns
+        tvl_df = tvl_df.loc[:, ~tvl_df.columns.str.contains('^Unnamed')]
+        tvl_df.columns = tvl_df.columns.str.lower()
+        tvl_df['date'] = pd.to_datetime(tvl_df['date'], format='%d/%m/%Y')
+        tvl_df.set_index('date', inplace=True)
+        prices_df = prices_df.join(tvl_df, how='left')
+        prices_df['tvl_change'] = prices_df['tvl'].pct_change()
+
+    return prices_df[(prices_df.index <= expiry_date - pd.Timedelta(days=1))] # Exclude the last day of the data since yt will be 0 for that day
 
 def prepare_price_data(path):
     df = pd.read_csv(path)
