@@ -25,6 +25,7 @@ def calculate_gamma(df):
 def calculate_vega(df):
     if 'pt_open' in df.columns:
         df['volatility'] = df['pt_open'].pct_change().rolling(window=30).std()
+        df['30d_pt_volatility'] = df['pt_open'].pct_change().rolling(window=30).std()
         df['volatility_change'] = df['volatility'].diff().fillna(0)
         df['vega'] = df['pt_change'] / df['volatility_change'].replace(0, method='ffill')  # Replace zero to avoid division by zero
     return df
@@ -33,20 +34,36 @@ def calculate_implied_apy(prices_df, expiry_date):
     # Convert PT and YT prices from USD to ETH using the underlying price
     prices_df['pt_open_eth'] = prices_df['pt_open'] / prices_df['underlying_open']
     prices_df['yt_open_eth'] = prices_df['yt_open'] / prices_df['underlying_open']
+    prices_df['pt_high_eth'] = prices_df['pt_high'] / prices_df['underlying_high']
+    prices_df['yt_high_eth'] = prices_df['yt_high'] / prices_df['underlying_high']
+    prices_df['pt_low_eth'] = prices_df['pt_low'] / prices_df['underlying_low']
+    prices_df['yt_low_eth'] = prices_df['yt_low'] / prices_df['underlying_low']
+    prices_df['pt_close_eth'] = prices_df['pt_close'] / prices_df['underlying_open']
+    prices_df['yt_close_eth'] = prices_df['yt_close'] / prices_df['underlying_open']
 
     prices_df['implied_apy'] = (1 + prices_df['yt_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
     return prices_df
 
+# Don't mind all the volatility calculations, most of them are legacy and not used.
+# Main importance is the 30d_ewm_volatility variables
 def calculate_volatility(df):
     df['daily_pt_change'] = df['pt_open_eth'].pct_change()
     df['daily_yt_change'] = df['yt_open_eth'].pct_change()
     df['daily_returns'] = df['underlying_open'].pct_change()
     df['volatility'] = df['daily_returns'].rolling(window=30).std() * np.sqrt(252)  # Annualized Volatility
+    df['30d_volatility'] = df['daily_pt_change'].rolling(window=30).std() * np.sqrt(365)  # Annualized Volatility
+    df['7d_volatility'] = df['daily_pt_change'].rolling(window=7).std() * np.sqrt(365)  # Annualized Volatility
+    df['5d_volatility'] = df['daily_pt_change'].rolling(window=5).std() * np.sqrt(365)  # Annualized Volatility
+    df['30d_ewm_volatility'] = df['daily_pt_change'].ewm(span=30).std() * np.sqrt(365)  # Annualized Exponentially Weighted Volatility
+    df['30d_ewm_pt_volatility'] = df['daily_pt_change'].ewm(span=30).std() * np.sqrt(365)  # Annualized Exponentially Weighted Volatility
+    df['30d_ewm_yt_volatility'] = df['daily_yt_change'].ewm(span=30).std() * np.sqrt(365)  # Annualized Exponentially Weighted Volatility
+    df['30d_ewm_underlying_volatility'] = df['daily_underlying_change'].ewm(span=30).std() * np.sqrt(365)  # Annualized Exponentially Weighted Volatility
+
     return df
 
 def calculate_fixed_yield(prices_df, expiry_date):
     # Calculate the fixed yield
-    prices_df['fixed_yield'] = (prices_df['underlying_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
+    # prices_df['fixed_yield'] = (prices_df['underlying_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
     prices_df['fixed_yield'] = -365 / prices_df['days_to_expiry'] * np.log(prices_df['pt_open'] / prices_df['underlying_open'])
     return prices_df
 
@@ -104,10 +121,10 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     underlying_df.set_index('date', inplace=True)
 
     # Inner join the dataframes on 'time'
-    prices_df = pt_df[['open', 'volume']].join(yt_df[['open', 'volume']], lsuffix='_pt', rsuffix='_yt', how='inner').join(underlying_df[['open', 'volume']], rsuffix='_underlying', how='inner')
+    prices_df = pt_df[['open', 'volume', 'high', 'low', 'close']].join(yt_df[['open', 'volume', 'high', 'low', 'close']], lsuffix='_pt', rsuffix='_yt', how='inner').join(underlying_df[['open', 'volume', 'high', 'low']], rsuffix='_underlying', how='inner')
 
     # Rename the columns
-    prices_df.columns = ['pt_open', 'pt_volume', 'yt_open', 'yt_volume', 'underlying_open', 'underlying_volume']
+    prices_df.columns = ['pt_open', 'pt_volume', 'pt_high', 'pt_low', 'pt_close', 'yt_open', 'yt_volume', 'yt_high', 'yt_low', 'yt_close', 'underlying_open', 'underlying_volume', 'underlying_high', 'underlying_low']
 
     # Filter the data by start and expiry dates
     prices_df = prices_df[(prices_df.index >= start_date) & (prices_df.index <= expiry_date)]
@@ -119,6 +136,7 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     prices_df['pct_maturity_left'] = prices_df['days_to_expiry'] / (expiry_date - start_date).days
     prices_df = calculate_theoretical_pt_yt(prices_df, start_date, expiry_date)
     # prices_df = iterate_yield_price_convergence(prices_df, iterations=1)
+    prices_df['daily_underlying_change'] = prices_df['underlying_open'].pct_change()
     prices_df = calculate_volatility(prices_df)
 
     prices_df = calculate_delta(prices_df)
