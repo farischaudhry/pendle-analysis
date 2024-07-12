@@ -63,8 +63,8 @@ def calculate_volatility(df):
 
 def calculate_fixed_yield(prices_df, expiry_date):
     # Calculate the fixed yield
-    # prices_df['fixed_yield'] = (prices_df['underlying_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
-    prices_df['fixed_yield'] = -365 / prices_df['days_to_expiry'] * np.log(prices_df['pt_open'] / prices_df['underlying_open'])
+    prices_df['fixed_yield'] = (prices_df['underlying_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
+    # prices_df['fixed_yield'] = -365 / prices_df['days_to_expiry'] * np.log(prices_df['pt_open'] / prices_df['underlying_open'])
     return prices_df
 
 def calculate_theoretical_pt_yt(prices_df, start_date, expiry_date):
@@ -99,6 +99,12 @@ def iterate_yield_price_convergence(prices_df, iterations=10):
         prices_df = calculate_theoretical_prices(prices_df)
 
     return prices_df
+
+
+def calculate_normal_changes(df):
+    df['theta'] = df['fixed_yield'] * df['pt_open_eth']
+    df['residual_change'] = df['pt_open_eth'] - df['theta']
+    df['residual_change_pct'] = df['residual_change'].pct_change()
 
 def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_date, tvl_path=None):
     # Load the data
@@ -142,6 +148,7 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     prices_df = calculate_delta(prices_df)
     prices_df = calculate_gamma(prices_df)
     prices_df = calculate_vega(prices_df)
+    prices_df = calculate_normal_changes(prices_df)
 
     if tvl_path:
         tvl_df = pd.read_csv(tvl_path)
