@@ -105,6 +105,7 @@ def calculate_normal_changes(df):
     df['theta'] = df['fixed_yield'] * df['pt_open_eth']
     df['residual_change'] = df['pt_open_eth'] - df['theta']
     df['residual_change_pct'] = df['residual_change'].pct_change()
+    return df
 
 def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_date, tvl_path=None):
     # Load the data

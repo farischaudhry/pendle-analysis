@@ -15,7 +15,7 @@ eETH_UNDERLYING_ADDRESS = '0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee' # same un
 
 etherfi_eETH_Jun_YT_ADDRESS = '0xfb35fd0095dd1096b1ca49ad44d8c5812a201677'
 etherfi_eETH_Jun_PT_ADDRESS = '0xc69ad9bab1dee23f4605a82b3354f8e40d1e5966'
-etherfi_eETH_Jun_start_date = datetime(2024, 3, 19)  # 19th March 2024
+etherfi_eETH_Jun_start_date = datetime(2024, 1, 9)  # 9th January 2024
 
 etherfi_eETH_Sep_YT_ADDRESS = '0xa54df645a042d24121a737daa89a57ebf8e0b71c'
 etherfi_eETH_Sep_PT_ADDRESS = '0x1c085195437738d73d75dc64bc5a3e098b7f93b1'
@@ -45,7 +45,7 @@ pufETH_UNDERLYING_ADDRESS = '0xd9a442856c234a39a81a089c06451ebaa4306a72'
 
 pufETH_Jun_YT_ADDRESS = '0x391b570e81e354a85a496952b66adc831715f54f'
 pufETH_Jun_PT_ADDRESS = '0xc58aa33ce619c7f7ac4929df357d0ef762edbd23'
-pufETH_Jun_start_date = datetime(2024, 3, 19)  # 19th March 2024
+pufETH_Jun_start_date = datetime(2024, 2, 26)  # 26th March 2024
 
 pufETH_Sep_YT_ADDRESS = '0x1a65eb80a2ac3ea6e41d456ddd6e9cc5728bef7c'
 pufETH_Sep_PT_ADDRESS = '0xd4e75971eaf78a8d93d96df530f1fff5f9f53288'
@@ -56,7 +56,7 @@ uniETH_UNDERLYING_ADDRESS = '0xf1376bcef0f78459c0ed0ba5ddce976f1ddf51f4'
 
 uniETH_Jun_YT_ADDRESS = '0x5ae176bbcb9a4461aeeeb97c90c2a80c2078006a'
 uniETH_Jun_PT_ADDRESS = '0xf2ce61699660f0f5800ba7d962741ba582d7346b'
-uniETH_Jun_start_date = datetime(2024, 3, 29)  # 29th March 2024
+uniETH_Jun_start_date = datetime(2024, 2, 21)  # 21st February 2024
 
 uniETH_Sep_YT_ADDRESS = '0xdf74ba4436478969a54ecb352093312fe97ebaa5'
 uniETH_Sep_PT_ADDRESS = '0x15fa86404bfba8b46684552f792558128bfb6418'
@@ -67,7 +67,7 @@ rsETH_UNDERLYING_ADDRESS = '0xa1290d69c65a6fe4df752f95823fae25cb99e5a7'
 
 rsETH_Jun_YT_ADDRESS = '0x0ed3a1d45dfdcf85bcc6c7bafdc0170a357b974c'
 rsETH_Jun_PT_ADDRESS = '0xb05cabcd99cf9a73b19805edefc5f67ca5d1895e'
-rsETH_Jun_start_date = datetime(2024, 5, 20)  # 20th May 2024
+rsETH_Jun_start_date = datetime(2024, 1, 22)  # 22nd January 2024
 
 rsETH_Sep_YT_ADDRESS = '0xe653e4048620e546afff02d3689678896d22e236'
 rsETH_Sep_PT_ADDRESS = '0x7baf258049cc8b9a78097723dc19a8b103d4098f'
