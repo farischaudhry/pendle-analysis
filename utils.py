@@ -42,6 +42,8 @@ def calculate_implied_apy(prices_df, expiry_date):
     prices_df['yt_close_eth'] = prices_df['yt_close'] / prices_df['underlying_open']
 
     prices_df['implied_apy'] = (1 + prices_df['yt_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
+    prices_df['daily_implied_rate'] = (1 + 0.03) ** (1/365) - 1
+    prices_df['expected_yield'] = prices_df['daily_implied_rate'] * prices_df['underlying_open']
     return prices_df
 
 # Don't mind all the volatility calculations, most of them are legacy and not used.
@@ -49,6 +51,9 @@ def calculate_implied_apy(prices_df, expiry_date):
 def calculate_volatility(df):
     df['daily_pt_change'] = df['pt_open_eth'].pct_change()
     df['daily_yt_change'] = df['yt_open_eth'].pct_change()
+    df['pt_change'] = df['pt_open_eth'].pct_change()
+    df['yt_change'] = df['yt_open_eth'].pct_change()
+    df['underlying_change'] = df['yt_open_eth'].pct_change()
     df['daily_returns'] = df['underlying_open'].pct_change()
     df['volatility'] = df['daily_returns'].rolling(window=30).std() * np.sqrt(252)  # Annualized Volatility
     df['30d_volatility'] = df['daily_pt_change'].rolling(window=30).std() * np.sqrt(365)  # Annualized Volatility
