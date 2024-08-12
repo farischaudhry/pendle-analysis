@@ -44,6 +44,7 @@ def calculate_implied_apy(prices_df, expiry_date):
     prices_df['implied_apy'] = (1 + prices_df['yt_open'] / prices_df['pt_open']) ** (365 / prices_df['days_to_expiry']) - 1
     prices_df['daily_implied_rate'] = (1 + 0.03) ** (1/365) - 1
     prices_df['expected_yield'] = prices_df['daily_implied_rate'] * prices_df['underlying_open']
+    prices_df['yearly_expected_yield'] = prices_df['implied_apy'] * prices_df['underlying_open']
     return prices_df
 
 # Don't mind all the volatility calculations, most of them are legacy and not used.
