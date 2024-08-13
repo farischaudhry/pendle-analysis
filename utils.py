@@ -113,7 +113,7 @@ def calculate_normal_changes(df):
     df['residual_change_pct'] = df['residual_change'].pct_change()
     return df
 
-def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_date, tvl_path=None):
+def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_date, tvl_path=None, apy_path=None):
     # Load the data
     pt_df = pd.read_csv(pt_path)
     yt_df = pd.read_csv(yt_path)
@@ -166,6 +166,17 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
         tvl_df.set_index('date', inplace=True)
         prices_df = prices_df.join(tvl_df, how='left')
         prices_df['tvl_change'] = prices_df['tvl'].pct_change()
+
+    if apy_path:
+        apy_df = pd.read_csv(apy_path)
+        apy_df.columns = apy_df.columns.str.lower()
+        apy_df['date'] = pd.to_datetime(apy_df['timestamp'], format='%Y-%m-%d')
+        apy_df.set_index('date', inplace=True)
+
+        # Select only the 'underlyingapy' column for the join
+        apy_df = apy_df[['underlyingapy']]
+
+        prices_df = prices_df.join(apy_df, how='left')
 
     return prices_df[(prices_df.index <= expiry_date - pd.Timedelta(days=1))] # Exclude the last day of the data since yt will be 0 for that day
 
