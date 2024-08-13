@@ -15,14 +15,17 @@ def main():
         (TokenGroupFactory.etherfi_eETH_Sep, "Sep"),
         (TokenGroupFactory.etherfi_eETH_Dec, "Dec"),
         (TokenGroupFactory.zircuit_eETH_Jun, "Jun"),
+        (TokenGroupFactory.zircuit_eETH_Aug, "Aug"),
         (TokenGroupFactory.ezETH_Sep, "Sep"),
         (TokenGroupFactory.ezETH_Dec, "Dec"),
+        (TokenGroupFactory.zircuit_ezETH_Aug, "Aug"),
         (TokenGroupFactory.pufETH_Jun, "Jun"),
         (TokenGroupFactory.pufETH_Sep, "Sep"),
         (TokenGroupFactory.uniETH_Jun, "Jun"),
         (TokenGroupFactory.uniETH_Sep, "Sep"),
         (TokenGroupFactory.rsETH_Jun, "Jun"),
-        (TokenGroupFactory.rsETH_Sep, "Sep")
+        (TokenGroupFactory.rsETH_Sep, "Sep"),
+        (TokenGroupFactory.zircuit_rsETH_Aug, "Aug"),
     ]
 
     # Iterate over the list and perform operations

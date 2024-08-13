@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 expiry_date_jun = datetime(2024, 6, 27) # 27th June 2024
 expiry_date_sep = datetime(2024, 9, 26) # 26th September 2024
 expiry_date_dec = datetime(2024, 12, 26) # 26th December 2024
+expiry_date_aug = datetime(2024, 8, 22) # 22nd August 2024
 
 ### ChainIds
 
@@ -29,6 +30,10 @@ zircuit_eETH_Jun_YT_ADDRESS = '0x7c2d26182adeef96976035986cf56474fec03bda'
 zircuit_eETH_Jun_PT_ADDRESS = '0x4ae5411f3863cdb640309e84cedf4b08b8b33fff'
 zircuit_eETH_Jun_start_date = datetime(2024, 3, 26)  # 26th March 2024
 
+zircuit_eETH_Aug_YT_ADDRESS = '0x323da63d354c9d79df927fd21ce5b97add3a50d9'
+zircuit_eETH_Aug_PT_ADDRESS = '0x7131ed1994ba1a2a5392fe4d99e579f49f5ed48f'
+zircuit_eETH_Aug_start_date = datetime(2024, 6, 24)  # 24th June 2024
+
 ### renzo ezETH
 ezETH_UNDERLYING_ADDRESS = '0xbf5495efe5db9ce00f80364c8b423567e58d2110'
 
@@ -39,6 +44,10 @@ ezETH_Sep_start_date = datetime(2024, 5, 14)  # 14th May 2024
 ezETH_Dec_YT_ADDRESS = '0x7749f5ed1e356edc63d469c2fcac9adeb56d1c2b'
 ezETH_Dec_PT_ADDRESS = '0xf7906f274c174a52d444175729e3fa98f9bde285'
 ezETH_Dec_start_date = datetime(2024, 4, 21)  # 21st April 2024
+
+zircuit_ezETH_Aug_YT_ADDRESS = '0x87baf4b42c075db7eb1932a0a49a5465e9a5ce9f'
+zircuit_ezETH_Aug_PT_ADDRESS = '0x30a1d9be865fcebd0a56c15f56e0b0130f585a62'
+zircuit_ezETH_Aug_start_date = datetime(2024, 6, 24)  # 24th June 2024
 
 ### Puffer pufEth
 pufETH_UNDERLYING_ADDRESS = '0xd9a442856c234a39a81a089c06451ebaa4306a72'
@@ -72,4 +81,8 @@ rsETH_Jun_start_date = datetime(2024, 1, 22)  # 22nd January 2024
 rsETH_Sep_YT_ADDRESS = '0xe653e4048620e546afff02d3689678896d22e236'
 rsETH_Sep_PT_ADDRESS = '0x7baf258049cc8b9a78097723dc19a8b103d4098f'
 rsETH_Sep_start_date = datetime(2024, 5, 20)  # 20th May 2024
+
+zircuit_rsETH_Aug_YT_ADDRESS = '0x36bc05a1072ef7d763d5f11f463915aa1efb8ca8'
+zircuit_rsETH_Aug_PT_ADDRESS = '0x0eea62715beb9565c13232076396b1c80e05a5f1'
+zircuit_rsETH_Aug_start_date = datetime(2024, 6, 24) # 6th June 2024
 

@@ -19,12 +19,20 @@ class TokenGroupFactory:
         return TokenGroup("zircuit_eETH_Jun", ETHERIUM_CHAIN_ID, eETH_UNDERLYING_ADDRESS, zircuit_eETH_Jun_PT_ADDRESS, zircuit_eETH_Jun_YT_ADDRESS)
 
     @staticmethod
+    def zircuit_eETH_Aug():
+        return TokenGroup("zircuit_eETH_Aug", ETHERIUM_CHAIN_ID, eETH_UNDERLYING_ADDRESS, zircuit_eETH_Aug_PT_ADDRESS, zircuit_eETH_Aug_YT_ADDRESS)
+
+    @staticmethod
     def ezETH_Sep():
         return TokenGroup("ezETH_Sep", ETHERIUM_CHAIN_ID, ezETH_UNDERLYING_ADDRESS, ezETH_Sep_PT_ADDRESS, ezETH_Sep_YT_ADDRESS)
 
     @staticmethod
     def ezETH_Dec():
         return TokenGroup("ezETH_Dec", ETHERIUM_CHAIN_ID, ezETH_UNDERLYING_ADDRESS, ezETH_Dec_PT_ADDRESS, ezETH_Dec_YT_ADDRESS)
+
+    @staticmethod
+    def zircuit_ezETH_Aug():
+        return TokenGroup("zircuit_ezETH_Aug", ETHERIUM_CHAIN_ID, ezETH_UNDERLYING_ADDRESS, zircuit_ezETH_Aug_PT_ADDRESS, zircuit_ezETH_Aug_YT_ADDRESS)
 
     @staticmethod
     def pufETH_Jun():
@@ -50,5 +58,6 @@ class TokenGroupFactory:
     def rsETH_Sep():
         return TokenGroup("rsETH_Sep", ETHERIUM_CHAIN_ID, rsETH_UNDERLYING_ADDRESS, rsETH_Sep_PT_ADDRESS, rsETH_Sep_YT_ADDRESS)
 
-
-
+    @staticmethod
+    def zircuit_rsETH_Aug():
+        return TokenGroup("zircuit_rsETH_Aug", ETHERIUM_CHAIN_ID, rsETH_UNDERLYING_ADDRESS, zircuit_rsETH_Aug_PT_ADDRESS, zircuit_rsETH_Aug_YT_ADDRESS)
