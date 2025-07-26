@@ -157,6 +157,9 @@ def prepare_token_data(underlying_path, yt_path, pt_path, start_date, expiry_dat
     prices_df = calculate_vega(prices_df)
     prices_df = calculate_normal_changes(prices_df)
 
+    prices_df['TTM_days'] = (expiry_date - prices_df.index).days
+    prices_df['TTM_years'] = np.maximum(0, prices_df['TTM_days'] / 365.25)
+
     if tvl_path:
         tvl_df = pd.read_csv(tvl_path)
         # Remove unnamed columns
