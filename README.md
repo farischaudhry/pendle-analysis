@@ -76,7 +76,7 @@ To reproduce the full analysis and generate all figures from the paper, follow t
 If you use the code, data, or findings from this research in your own work, please cite the original paper:
 
 ```bibtex
-@misc{Chaudhry2024ResearchSquare,
+@misc{chaudhry2025pendle,
   author = {Chaudhry, Faris},
   title = {Implied Yields in Liquid Restaking: An Empirical Decomposition of Market-Implied Risk and Reward Premia},
   year = {2025},
