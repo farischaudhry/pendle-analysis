@@ -1,6 +1,6 @@
 # Implied Yields in Liquid Restaking: An Empirical Decomposition of Market-Implied Risk and Reward Premia
 
-This repository contains the full source code, data, and analysis for the paper, "Implied Yields in Liquid Restaking: An Empirical Decomposition of Market-Implied Risk and Reward Premia."
+This repository contains the full source code, data, and analysis for the paper, "Implied Yields in Liquid Restaking: An Empirical Decomposition of Market-Implied Risk and Reward Premia" (Digital Finance, 2026).
 
 ## Overview
 
@@ -8,7 +8,7 @@ This research provides an empirical analysis of the market-implied yields for Li
 
 ### Note on Previous Versions
 
-This repository has been significantly refactored since the preliminary version of the paper. The code and data for the preliminary version of this work, presented at the *2025 IEEE International Workshop on Cryptocurrency Exchanges (CryptoEx)*, can be found by checking out the `v1.0-cryptoex2025` Git tag in the **Releases** section.
+This repository has been significantly refactored since the preliminary version of the paper. The code and data for the preliminary version of this work, presented at the *2025 IEEE International Workshop on Cryptocurrency Exchanges (CryptoEx)*, can be found by checking out the `v1.0-cryptoex2025` Git tag in the **Releases** section. The current `main` branch corresponds to the final journal version of record.
 
 ### Repository Structure
 
@@ -67,7 +67,7 @@ pip install -r requirements.txt
 To reproduce the full analysis and generate all figures from the paper, follow these steps.
 
 - Open the `main.ipynb` notebook on e.g., Visual Studio Code.
-- Select the interpeter to be the version of python/venv/conda environment that the dependencies were installed into.
+- Select the interpreter to be the version of python/venv/conda environment that the dependencies were installed into.
 - To run the full analysis, you can either execute all cells sequentially ("Run All") or step through each cell individually.
 - The notebook will generate all plots and statistical outputs inline. These outputs correspond directly to the figures and results presented in the manuscript.
 
@@ -76,13 +76,16 @@ To reproduce the full analysis and generate all figures from the paper, follow t
 If you use the code, data, or findings from this research in your own work, please cite the original paper:
 
 ```bibtex
-@misc{chaudhry2025pendle,
-  author = {Chaudhry, Faris},
-  title = {Implied Yields in Liquid Restaking: An Empirical Decomposition of Market-Implied Risk and Reward Premia},
-  year = {2025},
-  publisher = {Research Square},
-  doi = {10.21203/rs.3.rs-7411925/v1},
-  url = {https://doi.org/10.21203/rs.3.rs-7411925/v1},
-  note = {Preprint}
+@article{Chaudhry2026ImpliedYields,
+  author    = {Chaudhry, Faris},
+  title     = {Implied yields in liquid restaking: an empirical decomposition of market-implied risk and reward premia},
+  journal   = {Digital Finance},
+  volume    = {8},
+  number    = {1},
+  pages     = {8},
+  year      = {2026},
+  publisher = {Springer},
+  doi       = {10.1007/s42521-025-00164-1},
+  url       = {https://doi.org/10.1007/s42521-025-00164-1}
 }
 ```
